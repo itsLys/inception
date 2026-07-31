@@ -1,0 +1,11 @@
+FROM debian:bookworm
+
+# Install required packages
+
+# Copy configuration files
+
+# Create required directories and permissions
+
+# Expose database port
+
+# Start MariaDB in foreground

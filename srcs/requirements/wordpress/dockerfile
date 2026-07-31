@@ -1,0 +1,19 @@
+FROM debian:bookworm
+
+RUN apt update -y && \
+    apt install -y php-fpm php-cli \
+    php-mbstring php-bcmath \
+    php-xml php-mysql php-gd \
+    php-curl php-zip php-imagick \
+    php-intl \
+    curl \
+    mariadb-client
+
+COPY ./php.conf /etc/php/8.2/fpm/pool.d/www.conf
+
+COPY init.sh /usr/local/bin/init.sh
+RUN chmod +x /usr/local/bin/init.sh
+
+EXPOSE 9000
+
+ENTRYPOINT ["init.sh"]
