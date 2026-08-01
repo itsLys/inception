@@ -1,9 +1,13 @@
 COMPOSE = docker compose -f srcs/docker-compose.yml
-
+DATA_PATH = $(HOME)/data
 all: up
 
-up:
-	$(COMPOSE) up -d
+$(DATA_PATH)/mysql $(DATA_PATH)/wordpress:
+	@mkdir -p $(DATA_PATH)/mysql
+	@mkdir -p $(DATA_PATH)/wordpress
+
+up: $(DATA_PATH)/mysql $(DATA_PATH)/wordpress
+	$(COMPOSE) up -d --build
 
 down:
 	$(COMPOSE) down

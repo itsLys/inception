@@ -1,11 +1,22 @@
 FROM debian:bookworm
 
-# Install required packages
+RUN apt update -y && \
+    apt install -y openssl \
+    nginx
 
-# Copy configuration files
+RUN mkdir -p /etc/nginx/ssl
 
-# Create required directories and permissions
+ARG DOMAIN_NAME
 
-# Expose database port
+RUN openssl req -x509 \
+    -nodes -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/nginx.key \
+    -out  /etc/nginx/ssl/nginx.crt \
+    -days 365 \
+    -subj "/CN=${DOMAIN_NAME}"
 
-# Start MariaDB in foreground
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 443
+
+CMD [ "nginx", "-g", "daemon off;" ]
