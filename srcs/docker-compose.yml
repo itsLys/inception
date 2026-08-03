@@ -41,6 +41,14 @@ services:
       - wp_data:/var/www/html
     restart: on-failure
 
+  adminer:
+    container_name: adminer
+    env_file: .env
+    build: ./requirements/bonus/adminer
+    networks:
+      - inception
+    restart: on-failure
+
 secrets:
   db_password:
     file: ../secrets/db_password.txt
@@ -60,11 +68,11 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/${USER}/data/mysql
+      device: /home/${LOGIN}/data/mysql
 
   wp_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/${USER}/data/wordpress
+      device: /home/${LOGIN}/data/wordpress

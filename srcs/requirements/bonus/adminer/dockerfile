@@ -1,0 +1,11 @@
+FROM debian:bookworm
+
+RUN apt-get update && apt-get install -y \
+    php-cli \
+    php-mysqli \
+    curl
+
+RUN mkdir -p /adminer/
+RUN curl -Lo /adminer/index.php https://github.com/vrana/adminer/releases/download/v5.5.1/adminer-5.5.1.php
+
+CMD [ "php", "-S", "0.0.0.0:8080", "-t", "/adminer" ]

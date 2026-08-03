@@ -43,6 +43,11 @@ if [ ! -f wp-config.php ]; then
         --user_pass="${WP_USER_PASSWORD}" \
         --allow-root
 
+    wp plugin install redis-cache --activate --allow-root
+    wp redis enable --allow-root
+    wp config set WP_REDIS_HOST redis --allow-root
+    wp config set WP_REDIS_PORT 6379 --raw --allow-root
+
     echo "WordPress installation complete!"
 else
     echo "WordPress already configured, skipping setup..."
