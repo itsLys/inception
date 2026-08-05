@@ -39,6 +39,6 @@ fclean:
 	$(COMPOSE) down --rmi all -v --remove-orphans
 
 re-no-cache: fclean build-no-cache up
-re: fclean build up
+re: fclean up
 
 .PHONY: all up down start stop restart build logs ps fclean clean re

@@ -8,5 +8,4 @@ RUN echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://
     | tee /etc/apt/sources.list.d/redis.list
 RUN apt update -y && apt install -y redis procps
 
-CMD [ "redis-server", "--daemonize", "no" ]
-
+CMD [ "redis-server", "--protected-mode", "no", "--daemonize", "no" ]
