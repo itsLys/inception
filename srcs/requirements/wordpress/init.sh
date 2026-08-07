@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
 
-DB_PASSWORD=$(cat /run/secrets/db_password)
+# DB_PASSWORD=$(cat /run/secrets/db_password)
+DB_PASSWORD=dbpassword123
 
 until mysql -h mariadb -u"${MYSQL_USER}" -p"${DB_PASSWORD}" -e "SELECT 1" > /dev/null 2>&1; do
     sleep 3
@@ -48,6 +49,10 @@ fi
 
 if ! wp plugin is-installed redis-cache --allow-root; then
     wp plugin install redis-cache --activate --allow-root
+fi
+
+if ! wp plugin is-active redis-cache --allow-root; then
+    wp plugin activate redis-cache --allow-root
 fi
 
 wp config set WP_REDIS_HOST redis --allow-root

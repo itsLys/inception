@@ -68,7 +68,6 @@ services:
     container_name: ftpserver
     env_file: .env
     build: ./requirements/bonus/ftpserver
-
     ports:
       - "21:21"
       - "50000-50099:50000-50099"
@@ -79,6 +78,16 @@ services:
       - wp_data:/var/www/html
     secrets:
       - ftp_user_password
+
+  portainer:
+    container_name: portainer
+    build: ./requirements/bonus/portainer
+    restart: on-failure
+    networks:
+      - inception
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
 
 secrets:
   db_password:
@@ -96,6 +105,13 @@ networks:
   inception:
 
 volumes:
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${LOGIN}/data/portainer
+
   db_data:
     driver: local
     driver_opts:

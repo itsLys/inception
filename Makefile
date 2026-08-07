@@ -2,11 +2,12 @@ COMPOSE = docker compose -f srcs/docker-compose.yml
 DATA_PATH = $(HOME)/data
 all: up
 
-$(DATA_PATH)/mysql $(DATA_PATH)/wordpress:
+$(DATA_PATH)/mysql $(DATA_PATH)/wordpress $(DATA_PATH)/portainer:
 	@mkdir -p $(DATA_PATH)/mysql
 	@mkdir -p $(DATA_PATH)/wordpress
+	@mkdir -p $(DATA_PATH)/portainer
 
-up: $(DATA_PATH)/mysql $(DATA_PATH)/wordpress
+up: $(DATA_PATH)/mysql $(DATA_PATH)/wordpress $(DATA_PATH)/portainer
 	$(COMPOSE) up -d --build
 
 down:
@@ -23,9 +24,6 @@ restart: down up
 build:
 	$(COMPOSE) build
 
-build-no-cache:
-	$(COMPOSE) build --no-cache
-
 logs:
 	$(COMPOSE) logs -f
 
@@ -38,7 +36,11 @@ clean:
 fclean:
 	$(COMPOSE) down --rmi all -v --remove-orphans
 
-re-no-cache: fclean build-no-cache up
 re: fclean up
+
+obliterate:
+	$(COMPOSE) down --rmi all -v --remove-orphans
+	docker builder prune -af
+	docker system prune -af --volumes
 
 .PHONY: all up down start stop restart build logs ps fclean clean re
